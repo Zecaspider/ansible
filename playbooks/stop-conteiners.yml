@@ -1,0 +1,6 @@
+- name: Parar todos os containeres
+  hosts: "*"
+  become: yes
+  tasks:
+    - name: Parar todos os containers
+      shell: docker stop $(docker ps -qa)

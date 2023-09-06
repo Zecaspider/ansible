@@ -1,0 +1,6 @@
+---
+- name: "Restart hosts"
+  hosts: "*"
+  tasks:
+    - name: "Restart Windows"
+      win_reboot:

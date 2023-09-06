@@ -1,0 +1,10 @@
+- name: Remover cronjob de stress-ng
+  hosts: "*"
+  become: yes
+  tasks:
+    - name: Remover cronjob
+      cron:
+        name: "Executar comandos no reinício"
+        job: |
+          @reboot sleep 60 && stress-ng --vm-bytes $(awk '/MemAvailable/{printf "%d\n", $2 * 0.9;}' < /proc/meminfo)k --vm-keep --vm 2 --timeout 30s && systemctl restart docker >> /tmp/cronjob.log 2>&1
+        state: absent

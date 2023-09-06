@@ -1,0 +1,9 @@
+- name: install latest net-tools
+  hosts: "*"
+  tasks:
+    - name: install net-tools
+      apt:
+        name: net-tools
+        state: present
+        update_cache: true
+      become: true

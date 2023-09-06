@@ -1,0 +1,6 @@
+- name: Iniciar todos os containeres parados executando no shell no host de destino
+  hosts: "*"
+  become: yes
+  tasks:
+    - name: Iniciar todos os containers parados
+      shell: docker start $(docker ps -qa)

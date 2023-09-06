@@ -1,0 +1,18 @@
+---
+- name: Realizar backup das bases de dados dos containers PostgreSQL
+  hosts: "*"
+  become: yes
+  tasks:
+    - name: Criar diretório de backup
+      file:
+        path: "/data/backup/{{ inventory_hostname }}"
+        state: directory
+
+    - name: Executar comando de backup
+      shell: docker exec -it postgresdb pg_dumpall -c -U postgres  > "/data/backup/{{ inventory_hostname }}/alldb_dump.sql"
+
+    - name: Copiar arquivos de backup para o control node
+      fetch:
+        src: "/data/backup/{{ inventory_hostname }}/alldb_dump.sql"
+        dest: "/data/backup/{{ inventory_hostname }}/alldb_dump.sql"
+        flat: yes

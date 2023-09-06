@@ -1,0 +1,10 @@
+- hosts: "*"
+  tasks:
+    - name: "Allocate all available memory"
+      shell: stress-ng --vm-bytes $(awk '/MemAvailable/{printf "%d\n", $2 * 0.9;}' < /proc/meminfo)k --vm-keep --vm 2 --timeout 30s
+    - name: "Restart docker after mem update"
+      become: yes
+      shell: systemctl restart docker
+
+
+      stress-ng --vm-bytes 20G --vm-keep --vm 2 --timeout 30s

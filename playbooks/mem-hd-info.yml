@@ -1,0 +1,36 @@
+# - hosts: "*"
+#   become: yes
+#   tasks:
+#     - name: Verificar uso de RAM
+#       ansible.builtin.shell: free -h
+#       register: resultado_ram
+
+#     - debug:
+#         var: resultado_ram.stdout
+
+#     - name: Verificar espaço em disco
+#       ansible.builtin.shell: df -h
+#       register: resultado_disco
+
+#     - debug:
+#         var: resultado_disco.stdout
+
+# NA VERSÃO ABAIXO, A SAIDA É FORMATADA, E OS LABELS OU CABEÇALHOS SÃO MOSTRADOS
+- hosts: "*"
+  become: yes
+  tasks:
+    - name: Verificar uso de RAM
+      ansible.builtin.shell: free -h | grep Mem
+      register: resultado_ram
+
+    - debug:
+        msg: |
+          {{ resultado_ram.stdout_lines[0] }}  # Cabeçalhos (Mem, Total, Used, Free, etc.)
+          {{ resultado_ram.stdout_lines[1] }}  # Valores para a memória RAM
+
+    - name: Verificar espaço em disco
+      ansible.builtin.shell: df -h | grep /dev/
+      register: resultado_disco
+
+    - debug:
+        msg: "{{ resultado_disco.stdout }}"

@@ -1,0 +1,15 @@
+---
+- name:  Windows Update
+  hosts: "*"
+#  gather_facts: false
+  tasks:
+    - name: Installation of security, critical, and update rollups
+      win_updates:
+        state: installed
+        category_names:
+          - SecurityUpdates
+          - CriticalUpdates
+          - UpdateRollups
+          - 'Definition Updates'
+          - 'Microsoft Defender Antivirus'
+        reboot: yes

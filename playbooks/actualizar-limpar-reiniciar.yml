@@ -1,0 +1,38 @@
+---
+- name: Atualizar e Limpar o Ubuntu Server
+  hosts: "*"
+  become: yes
+
+  tasks:
+    - name: Atualizar sistema
+      apt:
+        update_cache: yes
+        upgrade: safe
+
+    - name: Instalar update-manager-core
+      apt:
+        name: update-manager-core
+        state: present
+
+    - name: Definir Prompt para "normal" no arquivo release-upgrades
+      lineinfile:
+        dest: /etc/update-manager/release-upgrades
+        regexp: '^Prompt='
+        line: 'Prompt=normal'
+
+    - name: Executar o comando de atualização do sistema
+      command: do-release-upgrade -q
+      args:
+        creates: /var/log/dist-upgrade
+
+    - name: Limpar registros antigos do systemd journal
+      command: journalctl --vacuum-size=100M
+
+    - name: Reboot a slow machine that might have lots of updates to apply
+      reboot:
+        reboot_timeout: 3600
+    # - name: Reiniciar o servidor
+    #   reboot:
+    #     connect_timeout: 300
+    #     reboot_timeout: 600
+    #     reboot_msg: "Reinicializando o servidor para aplicar atualizações."

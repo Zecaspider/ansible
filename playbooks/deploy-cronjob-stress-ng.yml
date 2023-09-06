@@ -1,0 +1,22 @@
+# ---
+# - name: Criar cronjob para stress-ng em todos os hosts
+#   hosts: "*"
+#   become: yes
+#   tasks:
+#     - name: Adicionar cronjob para stressar e preencher a memória
+#       cron:
+#         name: "Executar comandos no reinício"
+#         job: |
+#           @reboot sleep 60 && stress-ng --vm-bytes $(awk '/MemAvailable/{printf "%d\n", $2 * 0.9;}' < /proc/meminfo)k --vm-keep --vm 2 --timeout 30s && systemctl restart docker >> /tmp/cronjob.log 2>&1
+
+# A ABORDAGEM ABAIXO ADICIONA A LINHA MANUALMENTE NO CRONTAB
+
+---
+- name: Criar cronjob para stress-ng em todos os hosts
+  hosts: "*"
+  become: yes
+  tasks:
+    - name: Adicionar linha cron manual para stressar e preencher a memória no reinício
+      lineinfile:
+        dest: /etc/crontab
+        line: "@reboot lroot sleep 60 && stress-ng --vm-bytes $(awk '/MemAvailable/{printf \"%d\\n\", $2 * 0.9;}' < /proc/meminfo)k --vm-keep --vm 2 --timeout 30s && systemctl restart docker >> /tmp/cronjob.log 2>&1"

@@ -1,0 +1,6 @@
+- hosts: "*"
+  become: yes
+  tasks:
+    - name: Ensure pip module docker installation
+      ansible.builtin.pip:
+        name: docker

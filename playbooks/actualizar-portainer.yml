@@ -1,0 +1,19 @@
+- hosts: "*"
+  become: true
+  tasks:
+    - name: Atualizar Portainer
+      docker_container:
+        name: portainer
+        image: portainer/portainer-ce:latest
+        state: started
+        comparison_mode: image
+
+---
+- hosts: "*"
+  become: true
+  tasks:
+    - name: Atualizar Portainer
+      docker_container:
+        name: portainer
+        image: portainer/portainer-ce:latest
+        state: started

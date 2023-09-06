@@ -1,0 +1,11 @@
+- hosts: "*"
+  tasks:
+    - name: Prune everything (containers, images, networks, volumes, builder_cache)
+      community.docker.docker_prune:
+        containers: yes
+        images: yes
+        images_filters:
+          dangling: true
+        networks: yes
+        volumes: yes
+        builder_cache: yes

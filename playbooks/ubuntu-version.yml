@@ -1,0 +1,9 @@
+- hosts: "*"
+  become: yes
+  tasks:
+    - name: Verificar versão do Ubuntu
+      shell: lsb_release -a
+      register: resultado
+
+    - debug:
+        var: resultado.stdout

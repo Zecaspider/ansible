@@ -1,0 +1,13 @@
+---
+- name: Copy and execute Docker installation script
+  hosts: "*"
+  become: yes
+  tasks:
+    - name: Copy Docker installation script
+      copy:
+        src: docker.sh
+        dest: ~/docker.sh
+        mode: '0755'
+
+      - name: Execute Docker installation script
+        command: ~/docker.sh

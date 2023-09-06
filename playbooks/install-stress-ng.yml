@@ -1,0 +1,14 @@
+---
+- name: Instalar o stress-ng
+  hosts: "*"
+  become: yes
+
+  tasks:
+    - name: Atualizar lista de pacotes
+      apt:
+        update_cache: yes
+
+    - name: Instalar stress-ng
+      apt:
+        name: stress-ng
+        state: present

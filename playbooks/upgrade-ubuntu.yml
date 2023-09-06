@@ -1,0 +1,37 @@
+# - hosts: all
+#   become: yes
+#   tasks:
+#     - name: Atualizar lista de pacotes
+#       apt:
+#         update_cache: yes
+
+#     - name: Atualizar todos os pacotes
+#       apt:
+#         upgrade: dist
+
+#     - name: Atualizar para a nova versão do Ubuntu
+#       command: do-release-upgrade -f DistUpgradeViewNonInteractive
+
+#     - name: Reiniciar o sistema
+#       reboot:
+
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Upgrade packages
+      apt:
+        upgrade: yes
+        autoremove: yes
+        autoclean: yes
+
+    - name: Upgrade Ubuntu
+      command: do-release-upgrade -d -f DistUpgradeViewNonInteractive
+
+    - name: Reboot if required
+      reboot:
+        when: ansible_system_restart_required == true

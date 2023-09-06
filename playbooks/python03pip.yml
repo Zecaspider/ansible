@@ -1,0 +1,10 @@
+- hosts: "*"
+  become: yes
+  tasks:
+    - name: Update apt cache and make sure python3-pip and Curl
+      apt:
+        name: "{{ item }}"
+        update_cache: yes
+      loop:
+        - python3-pip
+        - curl
